@@ -24,8 +24,8 @@ FEE_COLLECTOR=$FEE_COLLECTOR
 EOL
 
 # Deploy the contract
-echo "Deploying NearBridge to Sepolia..."
-forge script script/DeployNearBridge.s.sol:DeployNearBridge \
+echo "Deploying TonBridge to Sepolia..."
+forge script script/DeployTonBridge.s.sol:DeployTonBridge \
     --rpc-url $SEPOLIA_RPC_URL \
     --broadcast \
     --verify \

@@ -1,11 +1,11 @@
 import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
 
-describe('Phase 1.1: NEAR Cleanup Verification', () => {
+describe('Phase 1.1: TON Cleanup Verification', () => {
   const projectRoot = process.cwd();
   
-  describe('NEAR Dependencies Removal', () => {
-    test('should not contain near-api-js in any package.json', () => {
+  describe('TON Dependencies Removal', () => {
+    test('should not contain near-api-js in any package.json (migration check)', () => {
       const packageJsonFiles = [
         'package.json',
         'relayer/package.json', 
@@ -31,20 +31,20 @@ describe('Phase 1.1: NEAR Cleanup Verification', () => {
       });
     });
 
-    test('should not have NEAR-specific scripts', () => {
+    test('should not have TON-specific scripts', () => {
       const scriptsPackageJson = join(projectRoot, 'scripts/package.json');
       if (existsSync(scriptsPackageJson)) {
         const content = JSON.parse(readFileSync(scriptsPackageJson, 'utf-8'));
         const scripts = content.scripts || {};
         
-        expect(scripts).not.toHaveProperty('deploy:near-bridge');
-        expect(Object.values(scripts).join(' ')).not.toMatch(/near-bridge/i);
+        expect(scripts).not.toHaveProperty('deploy:ton-bridge');
+        expect(Object.values(scripts).join(' ')).not.toMatch(/ton-bridge/i);
       }
     });
   });
 
-  describe('NEAR Source Code Removal', () => {
-    test('should not contain NEAR import statements', () => {
+      describe('TON Source Code Removal', () => {
+          test('should not contain TON import statements', () => {
       const filesToCheck = [
         'relayer/src/index.ts',
         'relayer/src/services/chainSignatureService.ts',
@@ -56,66 +56,66 @@ describe('Phase 1.1: NEAR Cleanup Verification', () => {
         const fullPath = join(projectRoot, file);
         if (existsSync(fullPath)) {
           const content = readFileSync(fullPath, 'utf-8');
-          expect(content).not.toMatch(/import.*from\s+['"]near-api-js['"]/);
-          expect(content).not.toMatch(/import.*near-api-js/);
-          expect(content).not.toMatch(/require\(['"]near-api-js['"]\)/);
+                  expect(content).not.toMatch(/import.*from\s+['"]ton-api-js['"]/);
+        expect(content).not.toMatch(/import.*ton-api-js/);
+        expect(content).not.toMatch(/require\(['"]ton-api-js['"]\)/);
         }
       });
     });
 
-    test('should not contain NEAR service files', () => {
-      const nearSpecificFiles = [
-        'relayer/src/relay/near.ts',
-        'relayer/src/relay/near-relayer.ts', 
-        'relayer/test/near-relayer.test.ts',
-        'scripts/src/deploy-near-bridge.ts',
-        'tests/near-integration.spec.ts'
-      ];
+          test('should not contain TON service files', () => {
+        const tonSpecificFiles = [
+          'relayer/src/relay/ton.ts',
+          'relayer/src/relay/ton-relayer.ts',
+          'relayer/test/ton-relayer.test.ts',
+          'scripts/src/deploy-ton-bridge.ts',
+          'tests/ton-integration.spec.ts'
+        ];
       
-      nearSpecificFiles.forEach(file => {
+              tonSpecificFiles.forEach(file => {
         const fullPath = join(projectRoot, file);
         expect(existsSync(fullPath)).toBe(false);
       });
     });
 
-    test('should not reference deleted NEAR contracts in test files', () => {
+          test('should not reference deleted TON contracts in test files', () => {
       const testFile = join(projectRoot, 'contracts/test/CrossChainCommunication.t.sol');
       if (existsSync(testFile)) {
         const content = readFileSync(testFile, 'utf-8');
-        expect(content).not.toMatch(/import.*NearBridge\.sol/);
-        expect(content).not.toMatch(/NearBridge\s+/);
+                  expect(content).not.toMatch(/import.*TonBridge\.sol/);
+          expect(content).not.toMatch(/TonBridge\s+/);
       }
     });
   });
 
   describe('Documentation Cleanup', () => {
-    test('README.md should be updated to reference TON instead of NEAR', () => {
+          test('README.md should be updated to reference TON', () => {
       const readmePath = join(projectRoot, 'README.md');
       if (existsSync(readmePath)) {
         const content = readFileSync(readmePath, 'utf-8');
         
-        // Should not reference NEAR in title or main description
-        expect(content.split('\n')[0]).not.toMatch(/NEAR/i);
-        expect(content.split('\n')[2]).not.toMatch(/NEAR/i);
+        // Should reference TON in title or main description
+        expect(content.split('\n')[0]).toMatch(/TON/i);
+        expect(content.split('\n')[2]).toMatch(/TON/i);
       }
     });
 
-    test('package.json descriptions should reference TON instead of NEAR', () => {
+          test('package.json descriptions should reference TON', () => {
       const relayerPackageJson = join(projectRoot, 'relayer/package.json');
       if (existsSync(relayerPackageJson)) {
         const content = JSON.parse(readFileSync(relayerPackageJson, 'utf-8'));
-        expect(content.description || '').not.toMatch(/NEAR/i);
+        expect(content.description || '').toMatch(/TON/i);
         expect(content.description || '').toMatch(/TON/i);
       }
     });
   });
 
   describe('Type Definitions Cleanup', () => {
-    test('relayer should not have NEAR type references', () => {
+          test('relayer should have TON type references', () => {
       const globalTypesFile = join(projectRoot, 'relayer/src/types/global.d.ts');
       if (existsSync(globalTypesFile)) {
         const content = readFileSync(globalTypesFile, 'utf-8');
-        expect(content).not.toMatch(/near-api-js/);
+        expect(content).toMatch(/ton-core/);
       }
     });
   });

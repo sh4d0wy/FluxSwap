@@ -32,22 +32,22 @@ This directory contains TypeScript scripts for deploying and interacting with th
 
 ## Available Scripts
 
-### Deploy NearBridge
+### Deploy TonBridge
 
-Deploys the NearBridge contract with the specified parameters.
+Deploys the TonBridge contract with the specified parameters.
 
 ```bash
 # Navigate to the scripts directory
 cd scripts
 
 # Deploy with default parameters
-npm run deploy:near-bridge
+npm run deploy:ton-bridge
 
 # Or with environment variables
 CHAIN_ID=11155111 \
 RPC_URL=https://sepolia.infura.io/v3/YOUR_INFURA_KEY \
 PRIVATE_KEY=your_private_key \
-npm run deploy:near-bridge
+npm run deploy:ton-bridge
 ```
 
 ### Deploy Escrow Factory

@@ -137,9 +137,9 @@ buildingwith1inch.md
 codereview.md
 fusionplus.md
 requirements.md
-nearprotocol.md
+tonprotocol.md
 solver.md
 
 package-lock.json
-near-contracts/escrow
+ton-contracts/escrow
 lib/contracts/lib

@@ -1,12 +1,12 @@
-# Cross-Chain Relayer (NEAR + Ethereum)
+# Cross-Chain Relayer (TON + Ethereum)
 
-This is the relayer service for the 1inch Fusion+ x NEAR Protocol cross-chain swap solution. The relayer monitors events on both Ethereum and NEAR blockchains, facilitating secure and efficient cross-chain communication between them.
+This is the relayer service for the 1inch Fusion+ x TON Protocol cross-chain swap solution. The relayer monitors events on both Ethereum and TON blockchains, facilitating secure and efficient cross-chain communication between them.
 
 ## Features
 
-- **Bidirectional Cross-Chain Swaps**: Enables seamless token swaps between NEAR and Ethereum
+- **Bidirectional Cross-Chain Swaps**: Enables seamless token swaps between TON and Ethereum
 - **Event Monitoring**: Tracks escrow creation, fulfillment, and cancellation events on both chains
-- **Message Relaying**: Handles secure message passing between NEAR and Ethereum
+- **Message Relaying**: Handles secure message passing between TON and Ethereum
 - **Robust Error Handling**: Implements retry mechanisms and error recovery
 - **Configurable Polling**: Adjustable intervals for block scanning and event processing
 - **Extensive Logging**: Detailed logs for monitoring and debugging
@@ -16,8 +16,8 @@ This is the relayer service for the 1inch Fusion+ x NEAR Protocol cross-chain sw
 
 - Node.js (v18 or higher)
 - pnpm (recommended) or npm
-- Rust (for NEAR smart contract development)
-- NEAR CLI (for NEAR account management)
+- Rust (for TON smart contract development)
+- TON CLI (for TON account management)
 - Git
 - Docker and Docker Compose (for local development and testing)
 
@@ -54,13 +54,13 @@ ETHEREUM_RPC_URL=http://localhost:8545
 ETHEREUM_CHAIN_ID=31337
 ETHEREUM_PRIVATE_KEY=0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 
-# NEAR Configuration
-NEAR_NETWORK=testnet
-NEAR_NODE_URL=https://rpc.testnet.near.org
-NEAR_WALLET_URL=https://wallet.testnet.near.org
-NEAR_HELPER_URL=https://helper.testnet.near.org
-NEAR_ACCOUNT_ID=your-near-account.testnet
-NEAR_PRIVATE_KEY=ed25519:...
+# TON Configuration
+TON_NETWORK=testnet
+TON_NODE_URL=https://testnet.toncenter.com/api/v2/jsonRPC
+TON_WALLET_URL=https://testnet.toncenter.com
+TON_HELPER_URL=https://testnet.toncenter.com
+TON_ACCOUNT_ID=your-ton-account.testnet
+TON_PRIVATE_KEY=your-private-key
 
 # Relayer Configuration
 RELAYER_POLL_INTERVAL=5000  # 5 seconds
@@ -70,7 +70,7 @@ RETRY_DELAY=5000           # Delay between retries in ms
 
 # Contract Addresses
 ETHEREUM_ESCROW_CONTRACT=0x...
-NEAR_ESCROW_CONTRACT=escrow.your-account.testnet
+TON_ESCROW_CONTRACT=escrow.your-account.testnet
 
 # Monitoring (Optional)
 PROMETHEUS_PORT=9090
@@ -81,11 +81,11 @@ GRAFANA_PORT=3001
 
 #### Testnet
 - **Ethereum**: Sepolia Testnet (Chain ID: 11155111)
-- **NEAR**: Testnet
+- **TON**: Testnet
 
 #### Mainnet
 - **Ethereum**: Mainnet (Chain ID: 1)
-- **NEAR**: Mainnet
+- **TON**: Mainnet
 
 ## Running the Relayer
 
@@ -119,21 +119,21 @@ GRAFANA_PORT=3001
 
 ## Cross-Chain Flow
 
-### NEAR to Ethereum Swap
-1. User initiates a swap on NEAR
-2. NEAR contract emits a `DepositInitiated` event
+### TON to Ethereum Swap
+1. User initiates a swap on TON
+2. TON contract emits a `DepositInitiated` event
 3. Relayer picks up the event and processes the deposit
-4. Funds are locked in the NEAR escrow
+4. Funds are locked in the TON escrow
 5. Relayer submits the transaction to Ethereum
 6. Funds are released to the recipient on Ethereum
 
-### Ethereum to NEAR Swap
+### Ethereum to TON Swap
 1. User initiates a swap on Ethereum
 2. Ethereum contract emits a `DepositInitiated` event
 3. Relayer picks up the event and processes the deposit
 4. Funds are locked in the Ethereum escrow
-5. Relayer submits the transaction to NEAR
-6. Funds are released to the recipient on NEAR
+5. Relayer submits the transaction to TON
+6. Funds are released to the recipient on TON
 
 ## Monitoring and Metrics
 
@@ -142,10 +142,10 @@ The relayer includes built-in monitoring capabilities using Prometheus and Grafa
 ### Available Metrics
 
 - **Ethereum Events Processed**: Counter for processed Ethereum events
-- **NEAR Events Processed**: Counter for processed NEAR events
+- **TON Events Processed**: Counter for processed TON events
 - **Active Connections**: Current number of active connections
 - **Ethereum Block Height**: Current Ethereum block height
-- **NEAR Block Height**: Current NEAR block height
+- **TON Block Height**: Current TON block height
 - **Message Processing Latency**: Time taken to process cross-chain messages
 - **Error Rates**: Count of failed operations by type
 
@@ -179,7 +179,7 @@ The relayer includes built-in monitoring capabilities using Prometheus and Grafa
 
 - Docker and Docker Compose
 - Node.js 18+ and pnpm/npm
-- Access to Ethereum and NEAR nodes
+- Access to Ethereum and TON nodes
 
 ### Environment Variables
 
@@ -191,12 +191,12 @@ ETHEREUM_RPC_URL=
 ETHEREUM_PRIVATE_KEY=
 ETHEREUM_ESCROW_FACTORY_ADDRESS=
 
-# NEAR Configuration
-NEAR_NETWORK=testnet
-NEAR_NODE_URL=
-NEAR_ACCOUNT_ID=
-NEAR_PRIVATE_KEY=
-NEAR_ESCROW_FACTORY_ADDRESS=
+# TON Configuration
+TON_NETWORK=testnet
+TON_NODE_URL=
+TON_ACCOUNT_ID=
+TON_PRIVATE_KEY=
+TON_ESCROW_FACTORY_ADDRESS=
 
 # Relayer Configuration
 LOG_LEVEL=info

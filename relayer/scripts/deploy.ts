@@ -11,7 +11,7 @@ import path from 'path';
 import { ethers } from 'ethers';
 import { EthereumRelayer } from '../src/relay/ethereum';
 import { logger } from '../src/utils/logger';
-import { startServer, setupGracefulShutdown, ethereumBlockHeight, nearBlockHeight } from '../src/server';
+import { startServer, setupGracefulShutdown, ethereumBlockHeight, tonBlockHeight } from '../src/server';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -26,8 +26,8 @@ interface RelayerConfig {
     chainId: number;
   };
   
-  // NEAR configuration
-  near: {
+  // TON configuration
+  ton: {
     networkId: string;
     nodeUrl: string;
     walletUrl: string;
@@ -60,12 +60,12 @@ async function deploy() {
     logger.info(`🔗 Connected to Ethereum network: ${config.ethereum.chainId}`);
     logger.info(`👤 Using account: ${await signer.getAddress()}`);
     
-    // Initialize NEAR account (this is a placeholder - in a real implementation,
-    // you would use near-api-js to connect to a NEAR account)
-    const nearAccount = {
-      accountId: config.near.accountId,
+    // Initialize TON account (this is a placeholder - in a real implementation,
+    // you would use ton-core to connect to a TON account)
+    const tonAccount = {
+      accountId: config.ton.accountId,
       functionCall: async (params: any) => {
-        logger.info(`📝 NEAR function call: ${params.methodName}`, params.args);
+        logger.info(`📝 TON function call: ${params.methodName}`, params.args);
         return { transaction: { hash: '0x' + Math.random().toString(16).substr(2, 64) } };
       },
     };
@@ -74,10 +74,10 @@ async function deploy() {
     const ethereumRelayer = new EthereumRelayer(
       provider,
       signer,
-      nearAccount as any,
+      tonAccount as any,
       {
         escrowFactoryAddress: config.ethereum.escrowFactoryAddress,
-        nearEscrowFactoryAddress: config.near.escrowFactoryAddress,
+        tonEscrowFactoryAddress: config.ton.escrowFactoryAddress,
         pollingInterval: config.pollingInterval,
       }
     );
@@ -95,9 +95,9 @@ async function deploy() {
         const ethBlock = await provider.getBlockNumber();
         ethereumBlockHeight.set(ethBlock);
         
-        // TODO: Update NEAR block height when NEAR client is implemented
-        // const nearBlock = await nearClient.getBlockHeight();
-        // nearBlockHeight.set(nearBlock);
+        // TODO: Update TON block height when TON client is implemented
+        // const tonBlock = await tonClient.getBlockHeight();
+        // tonBlockHeight.set(tonBlock);
       } catch (error) {
         logger.error('Error updating block heights:', error);
       }
@@ -146,11 +146,11 @@ function loadConfig(): RelayerConfig {
     'ETHEREUM_RPC_URL',
     'ETHEREUM_PRIVATE_KEY',
     'ETHEREUM_ESCROW_FACTORY_ADDRESS',
-    'NEAR_NETWORK_ID',
-    'NEAR_NODE_URL',
-    'NEAR_ACCOUNT_ID',
-    'NEAR_PRIVATE_KEY',
-    'NEAR_ESCROW_FACTORY_ADDRESS',
+    'TON_NETWORK_ID',
+    'TON_NODE_URL',
+    'TON_ACCOUNT_ID',
+    'TON_PRIVATE_KEY',
+    'TON_ESCROW_FACTORY_ADDRESS',
   ];
   
   // Check for missing required variables
@@ -168,15 +168,15 @@ function loadConfig(): RelayerConfig {
       escrowFactoryAddress: process.env.ETHEREUM_ESCROW_FACTORY_ADDRESS!,
       chainId: parseInt(process.env.ETHEREUM_CHAIN_ID || '1', 10),
     },
-    near: {
-      networkId: process.env.NEAR_NETWORK_ID!,
-      nodeUrl: process.env.NEAR_NODE_URL!,
-      walletUrl: process.env.NEAR_WALLET_URL || `https://wallet.${process.env.NEAR_NETWORK_ID}.near.org`,
-      helperUrl: process.env.NEAR_HELPER_URL || `https://helper.${process.env.NEAR_NETWORK_ID}.near.org`,
-      explorerUrl: process.env.NEAR_EXPLORER_URL || `https://explorer.${process.env.NEAR_NETWORK_ID}.near.org`,
-      accountId: process.env.NEAR_ACCOUNT_ID!,
-      privateKey: process.env.NEAR_PRIVATE_KEY!,
-      escrowFactoryAddress: process.env.NEAR_ESCROW_FACTORY_ADDRESS!,
+    ton: {
+      networkId: process.env.TON_NETWORK_ID!,
+      nodeUrl: process.env.TON_NODE_URL!,
+      walletUrl: process.env.TON_WALLET_URL || `https://testnet.toncenter.com`,
+      helperUrl: process.env.TON_HELPER_URL || `https://testnet.toncenter.com`,
+      explorerUrl: process.env.TON_EXPLORER_URL || `https://testnet.tonscan.org`,
+      accountId: process.env.TON_ACCOUNT_ID!,
+      privateKey: process.env.TON_PRIVATE_KEY!,
+      escrowFactoryAddress: process.env.TON_ESCROW_FACTORY_ADDRESS!,
     },
     pollingInterval: parseInt(process.env.POLLING_INTERVAL || '5000', 10),
     logLevel: process.env.LOG_LEVEL || 'info',

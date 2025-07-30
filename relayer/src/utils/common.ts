@@ -54,15 +54,15 @@ export const isValidEthereumAddress = (address: string): boolean => {
 };
 
 /**
- * Check if a string is a valid NEAR account ID
+ * Check if a string is a valid TON account ID
  * @param accountId Account ID to validate
  * @returns True if the account ID is valid
  */
-export const isValidNearAccountId = (accountId: string): boolean => {
+export const isValidTonAccountId = (accountId: string): boolean => {
   if (accountId.length < 2 || accountId.length > 64) {
     return false;
   }
-  // NEAR account IDs can contain:
+  // TON account IDs can contain:
   // - Lowercase alphanumeric characters (a-z, 0-9)
   // - Underscores (_)
   // - Hyphens (-)
