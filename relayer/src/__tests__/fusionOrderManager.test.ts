@@ -71,8 +71,8 @@ describe('FusionOrderManager', () => {
     const validOrderParams: OrderConstructionParams = {
       maker: '0x1234567890123456789012345678901234567890',
       receiver: '0x9876543210987654321098765432109876543210',
-      makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b', // Proper checksum
-      takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0', // Proper checksum
+      makerAsset: '0xFb5462dEE4e00401980730f0AB17232fd3Ca9889', // Proper checksum
+      takerAsset: '0xA0625266ed7347d2B1c8984fE15Db4DAFb36F46F', // Proper checksum
       makerAmount: '1000000000000000000', // 1 token
       takerAmount: '2000000000000000000',  // 2 tokens
       deadline: Math.floor(Date.now() / 1000) + 3600 // 1 hour from now
@@ -96,7 +96,7 @@ describe('FusionOrderManager', () => {
       const crossChainParams: OrderConstructionParams = {
         ...validOrderParams,
         tonDestination: {
-          tonRecipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL',
+          tonRecipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL=',
           jettonMaster: 'EQCxE6mUtQJKFnGfaROTKOt1lZbDiiX1kCixRv7Nw2Id_sDs',
           tonChainId: -3, // testnet
           relayerFee: '500000000000000000' // 0.5 ETH
@@ -153,8 +153,8 @@ describe('FusionOrderManager', () => {
       const validOrderParams: OrderConstructionParams = {
         maker: '0x1234567890123456789012345678901234567890',
         receiver: '0x9876543210987654321098765432109876543210',
-        makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6d8D3f1b',
-        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7d8c9e0',
+        makerAsset: '0xFb5462dEE4e00401980730f0AB17232fd3Ca9889',
+        takerAsset: '0xA0625266ed7347d2B1c8984fE15Db4DAFb36F46F',
         makerAmount: '1000000000000000000',
         takerAmount: '2000000000000000000',
         deadline: Math.floor(Date.now() / 1000) + 3600
@@ -203,8 +203,8 @@ describe('FusionOrderManager', () => {
       const validOrderParams: OrderConstructionParams = {
         maker: '0x1234567890123456789012345678901234567890',
         receiver: '0x9876543210987654321098765432109876543210',
-        makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6d8D3f1b',
-        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7d8c9e0',
+        makerAsset: '0xFb5462dEE4e00401980730f0AB17232fd3Ca9889',
+        takerAsset: '0xA0625266ed7347d2B1c8984fE15Db4DAFb36F46F',
         makerAmount: '1000000000000000000',
         takerAmount: '2000000000000000000',
         deadline: Math.floor(Date.now() / 1000) + 3600
@@ -226,13 +226,13 @@ describe('FusionOrderManager', () => {
       const crossChainParams: OrderConstructionParams = {
         maker: '0x1234567890123456789012345678901234567890',
         receiver: '0x9876543210987654321098765432109876543210',
-        makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6d8D3f1b',
-        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7d8c9e0',
+        makerAsset: '0xFb5462dEE4e00401980730f0AB17232fd3Ca9889',
+        takerAsset: '0xA0625266ed7347d2B1c8984fE15Db4DAFb36F46F',
         makerAmount: '1000000000000000000',
         takerAmount: '2000000000000000000',
         deadline: Math.floor(Date.now() / 1000) + 3600,
         tonDestination: {
-          tonRecipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL',
+          tonRecipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL=',
           tonChainId: -3
         }
       };
@@ -262,8 +262,8 @@ describe('FusionOrderManager', () => {
       const validOrderParams: OrderConstructionParams = {
         maker: '0x1234567890123456789012345678901234567890',
         receiver: '0x9876543210987654321098765432109876543210',
-        makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6d8D3f1b',
-        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7d8c9e0',
+        makerAsset: '0xFb5462dEE4e00401980730f0AB17232fd3Ca9889',
+        takerAsset: '0xA0625266ed7347d2B1c8984fE15Db4DAFb36F46F',
         makerAmount: '1000000000000000000',
         takerAmount: '2000000000000000000',
         deadline: Math.floor(Date.now() / 1000) + 3600
@@ -332,8 +332,8 @@ describe('FusionOrderManager', () => {
       const validOrderParams: OrderConstructionParams = {
         maker: '0x1234567890123456789012345678901234567890',
         receiver: '0x9876543210987654321098765432109876543210',
-        makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6d8D3f1b',
-        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7d8c9e0',
+        makerAsset: '0xFb5462dEE4e00401980730f0AB17232fd3Ca9889',
+        takerAsset: '0xA0625266ed7347d2B1c8984fE15Db4DAFb36F46F',
         makerAmount: '1000000000000000000',
         takerAmount: '2000000000000000000',
         deadline: Math.floor(Date.now() / 1000) + 3600
@@ -352,13 +352,13 @@ describe('FusionOrderManager', () => {
       const crossChainParams: OrderConstructionParams = {
         maker: '0x1234567890123456789012345678901234567890',
         receiver: '0x9876543210987654321098765432109876543210',
-        makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6d8D3f1b',
-        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7d8c9e0',
+        makerAsset: '0xFb5462dEE4e00401980730f0AB17232fd3Ca9889',
+        takerAsset: '0xA0625266ed7347d2B1c8984fE15Db4DAFb36F46F',
         makerAmount: '1000000000000000000',
         takerAmount: '2000000000000000000',
         deadline: Math.floor(Date.now() / 1000) + 3600,
         tonDestination: {
-          tonRecipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL',
+          tonRecipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL=',
           tonChainId: -3,
           relayerFee: '500000000000000000'
         }
@@ -380,8 +380,8 @@ describe('FusionOrderManager', () => {
       const orderParams: OrderConstructionParams = {
         maker: '0x1234567890123456789012345678901234567890',
         receiver: '0x9876543210987654321098765432109876543210',
-        makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
-        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0',
+        makerAsset: '0xFb5462dEE4e00401980730f0AB17232fd3Ca9889',
+        takerAsset: '0xA0625266ed7347d2B1c8984fE15Db4DAFb36F46F',
         makerAmount: '1000000000000000000',
         takerAmount: '2000000000000000000',
         deadline: Math.floor(Date.now() / 1000) + 3600 // Valid deadline initially
@@ -412,8 +412,8 @@ describe('FusionOrderManager', () => {
       const validOrderParams: OrderConstructionParams = {
         maker: '0x1234567890123456789012345678901234567890',
         receiver: '0x9876543210987654321098765432109876543210',
-        makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6d8D3f1b',
-        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7d8c9e0',
+        makerAsset: '0xFb5462dEE4e00401980730f0AB17232fd3Ca9889',
+        takerAsset: '0xA0625266ed7347d2B1c8984fE15Db4DAFb36F46F',
         makerAmount: '1000000000000000000',
         takerAmount: '2000000000000000000',
         deadline: Math.floor(Date.now() / 1000) + 3600

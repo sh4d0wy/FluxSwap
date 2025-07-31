@@ -6,7 +6,6 @@ import "cross-chain-swap/BaseEscrow.sol";
 import "cross-chain-swap/interfaces/IBaseEscrow.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@1inch/solidity-utils/contracts/libraries/AddressLib.sol";
-
 // Mock contract that inherits from BaseEscrow
 contract MockEscrow is BaseEscrow {
     using AddressLib for Address;

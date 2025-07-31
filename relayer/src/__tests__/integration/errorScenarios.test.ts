@@ -74,6 +74,7 @@ describe('Error Scenarios and Edge Cases Integration', () => {
       getAddress: jest.fn().mockResolvedValue('0x1234567890123456789012345678901234567890'),
       signMessage: jest.fn().mockResolvedValue('0x' + 'signature'.repeat(20)),
       signTransaction: jest.fn().mockResolvedValue('0x' + 'signedtx'.repeat(20)),
+      signTypedData: jest.fn().mockResolvedValue('0x' + 'typedSignature'.repeat(20)),
       sendTransaction: jest.fn().mockResolvedValue({
         hash: '0x' + 'txhash'.repeat(16),
         wait: jest.fn().mockResolvedValue({
@@ -122,7 +123,7 @@ describe('Error Scenarios and Edge Cases Integration', () => {
     const fusionConfig: FusionOrderManagerConfig = {
       ethereumProvider: mockEthereumProvider,
       chainId: 1,
-      verifyingContract: '0xFusionContract1234567890123456789012345678',
+      verifyingContract: '0x1111111111111111111111111111111111111111',
       relayerAddress: '0x1234567890123456789012345678901234567890',
       defaultRelayerFee: '1000000000000000'
     };
@@ -159,8 +160,8 @@ describe('Error Scenarios and Edge Cases Integration', () => {
       const orderParams: OrderConstructionParams = {
         maker: '0x1234567890123456789012345678901234567890',
         receiver: '0x9876543210987654321098765432109876543210',
-        makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
-        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0',
+        makerAsset: '0x29b63864FDF06B19daa5fb7134755941e305400D',
+        takerAsset: '0xb1C97A44F7d2c4f32dF9F8e8C3F4e5F6e7d8C9e0',
         makerAmount: '1000000000',
         takerAmount: '500000000000000000',
         deadline: Math.floor(Date.now() / 1000) + 3600
@@ -203,13 +204,13 @@ describe('Error Scenarios and Edge Cases Integration', () => {
        const orderParams: OrderConstructionParams = {
          maker: '0x1234567890123456789012345678901234567890',
          receiver: '0x9876543210987654321098765432109876543210',
-         makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
+         makerAsset: '0x29b63864FDF06B19daa5fb7134755941e305400D',
          takerAsset: '0x0000000000000000000000000000000000000000',
          makerAmount: '1000000000',
          takerAmount: '100000000000',
          deadline: Math.floor(Date.now() / 1000) + 3600,
          tonDestination: {
-           tonRecipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL',
+           tonRecipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL=',
            tonChainId: -3
          }
        };
@@ -242,11 +243,11 @@ describe('Error Scenarios and Edge Cases Integration', () => {
          ethereumBlockNumber: 18000001,
          ethereumLogIndex: 0,
          sender: '0x1234567890123456789012345678901234567890',
-         tonRecipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL',
+         tonRecipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL=',
          amount: '1000000000',
          hashlock: '0x' + 'hashlock'.repeat(8),
          timelock: Math.floor(Date.now() / 1000) + 3600,
-         tokenAddress: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
+         tokenAddress: '0x29b63864FDF06B19daa5fb7134755941e305400D',
          proof: {
            merkleProof: [],
            blockHeader: '0x' + 'header'.repeat(16),
@@ -271,8 +272,8 @@ describe('Error Scenarios and Edge Cases Integration', () => {
       const invalidOrderParams: OrderConstructionParams = {
         maker: 'invalid_ethereum_address',
         receiver: '0x9876543210987654321098765432109876543210',
-        makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
-        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0',
+        makerAsset: '0x29b63864FDF06B19daa5fb7134755941e305400D',
+        takerAsset: '0xb1C97A44F7d2c4f32dF9F8e8C3F4e5F6e7d8C9e0',
         makerAmount: '1000000000',
         takerAmount: '500000000000000000',
         deadline: Math.floor(Date.now() / 1000) + 3600
@@ -286,7 +287,7 @@ describe('Error Scenarios and Edge Cases Integration', () => {
        const invalidTonOrderParams: OrderConstructionParams = {
          maker: '0x1234567890123456789012345678901234567890',
          receiver: '0x9876543210987654321098765432109876543210',
-         makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
+         makerAsset: '0x29b63864FDF06B19daa5fb7134755941e305400D',
          takerAsset: '0x0000000000000000000000000000000000000000',
          makerAmount: '1000000000',
          takerAmount: '100000000000',
@@ -305,8 +306,8 @@ describe('Error Scenarios and Edge Cases Integration', () => {
       const expiredOrderParams: OrderConstructionParams = {
         maker: '0x1234567890123456789012345678901234567890',
         receiver: '0x9876543210987654321098765432109876543210',
-        makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
-        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0',
+        makerAsset: '0x29b63864FDF06B19daa5fb7134755941e305400D',
+        takerAsset: '0xb1C97A44F7d2c4f32dF9F8e8C3F4e5F6e7d8C9e0',
         makerAmount: '1000000000',
         takerAmount: '500000000000000000',
         deadline: Math.floor(Date.now() / 1000) - 3600 // 1 hour ago
@@ -320,8 +321,8 @@ describe('Error Scenarios and Edge Cases Integration', () => {
       const zeroAmountOrderParams: OrderConstructionParams = {
         maker: '0x1234567890123456789012345678901234567890',
         receiver: '0x9876543210987654321098765432109876543210',
-        makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
-        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0',
+        makerAsset: '0x29b63864FDF06B19daa5fb7134755941e305400D',
+        takerAsset: '0xb1C97A44F7d2c4f32dF9F8e8C3F4e5F6e7d8C9e0',
         makerAmount: '0', // Invalid: zero amount
         takerAmount: '500000000000000000',
         deadline: Math.floor(Date.now() / 1000) + 3600
@@ -352,8 +353,8 @@ describe('Error Scenarios and Edge Cases Integration', () => {
       const orderParams: OrderConstructionParams = {
         maker: '0x1234567890123456789012345678901234567890',
         receiver: '0x9876543210987654321098765432109876543210',
-        makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
-        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0',
+        makerAsset: '0x29b63864FDF06B19daa5fb7134755941e305400D',
+        takerAsset: '0xb1C97A44F7d2c4f32dF9F8e8C3F4e5F6e7d8C9e0',
         makerAmount: '1000000000',
         takerAmount: '500000000000000000',
         deadline: Math.floor(Date.now() / 1000) + 3600
@@ -386,8 +387,8 @@ describe('Error Scenarios and Edge Cases Integration', () => {
       const order1Params: OrderConstructionParams = {
         maker: '0x1111111111111111111111111111111111111111',
         receiver: '0x1111111111111111111111111111111111111111',
-        makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
-        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0',
+        makerAsset: '0x29b63864FDF06B19daa5fb7134755941e305400D',
+        takerAsset: '0xb1C97A44F7d2c4f32dF9F8e8C3F4e5F6e7d8C9e0',
         makerAmount: '1000000000',
         takerAmount: '500000000000000000',
         deadline: Math.floor(Date.now() / 1000) + 3600
@@ -396,8 +397,8 @@ describe('Error Scenarios and Edge Cases Integration', () => {
       const order2Params: OrderConstructionParams = {
         maker: '0x2222222222222222222222222222222222222222',
         receiver: '0x2222222222222222222222222222222222222222',
-        makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
-        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0',
+        makerAsset: '0x29b63864FDF06B19daa5fb7134755941e305400D',
+        takerAsset: '0xb1C97A44F7d2c4f32dF9F8e8C3F4e5F6e7d8C9e0',
         makerAmount: '1000000000',
         takerAmount: '500000000000000000',
         deadline: Math.floor(Date.now() / 1000) + 3600
@@ -432,8 +433,8 @@ describe('Error Scenarios and Edge Cases Integration', () => {
         const orderParams: OrderConstructionParams = {
           maker: `0x${i.toString(16).padStart(40, '0')}`,
           receiver: '0x9876543210987654321098765432109876543210',
-          makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
-          takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0',
+          makerAsset: '0x29b63864FDF06B19daa5fb7134755941e305400D',
+          takerAsset: '0xb1C97A44F7d2c4f32dF9F8e8C3F4e5F6e7d8C9e0',
           makerAmount: (1000000000 + i).toString(),
           takerAmount: '500000000000000000',
           deadline: Math.floor(Date.now() / 1000) + 3600
@@ -470,11 +471,11 @@ describe('Error Scenarios and Edge Cases Integration', () => {
           ethereumBlockNumber: 18000001 + i,
           ethereumLogIndex: 0,
           sender: '0x1234567890123456789012345678901234567890',
-          tonRecipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL',
+          tonRecipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL=',
           amount: (1000000000 + i).toString(),
           hashlock: '0x' + 'hashlock'.repeat(8),
           timelock: Math.floor(Date.now() / 1000) + 3600,
-          tokenAddress: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
+          tokenAddress: '0x29b63864FDF06B19daa5fb7134755941e305400D',
           proof: {
             merkleProof: [],
             blockHeader: '0x' + 'header'.repeat(16),
@@ -509,7 +510,7 @@ describe('Error Scenarios and Edge Cases Integration', () => {
          timelock: Math.floor(Date.now() / 1000) + 3600,
          amount: '1000000000',
          initiator: '0x1234567890123456789012345678901234567890',
-         recipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL'
+         recipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL='
        });
 
        // Simulate state corruption by updating with invalid data
@@ -529,13 +530,13 @@ describe('Error Scenarios and Edge Cases Integration', () => {
        const orderParams: OrderConstructionParams = {
          maker: '0x1234567890123456789012345678901234567890',
          receiver: '0x9876543210987654321098765432109876543210',
-         makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
+         makerAsset: '0x29b63864FDF06B19daa5fb7134755941e305400D',
          takerAsset: '0x0000000000000000000000000000000000000000',
          makerAmount: '1000000000',
          takerAmount: '100000000000',
          deadline: Math.floor(Date.now() / 1000) + 3600,
          tonDestination: {
-           tonRecipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL',
+           tonRecipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL=',
            tonChainId: -3
          }
        };
@@ -571,8 +572,8 @@ describe('Error Scenarios and Edge Cases Integration', () => {
       const nearDeadlineParams: OrderConstructionParams = {
         maker: '0x1234567890123456789012345678901234567890',
         receiver: '0x9876543210987654321098765432109876543210',
-        makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
-        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0',
+        makerAsset: '0x29b63864FDF06B19daa5fb7134755941e305400D',
+        takerAsset: '0xb1C97A44F7d2c4f32dF9F8e8C3F4e5F6e7d8C9e0',
         makerAmount: '1000000000',
         takerAmount: '500000000000000000',
         deadline: Math.floor(Date.now() / 1000) + 60 // Only 1 minute
@@ -604,8 +605,8 @@ describe('Error Scenarios and Edge Cases Integration', () => {
       const orderParams: OrderConstructionParams = {
         maker: '0x1234567890123456789012345678901234567890',
         receiver: '0x9876543210987654321098765432109876543210',
-        makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
-        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0',
+        makerAsset: '0x29b63864FDF06B19daa5fb7134755941e305400D',
+        takerAsset: '0xb1C97A44F7d2c4f32dF9F8e8C3F4e5F6e7d8C9e0',
         makerAmount: '1000000000',
         takerAmount: '500000000000000000',
         deadline: Math.floor(originalNow() / 1000) + 3600
@@ -632,13 +633,13 @@ describe('Error Scenarios and Edge Cases Integration', () => {
        const orderParams: OrderConstructionParams = {
          maker: '0x1234567890123456789012345678901234567890',
          receiver: '0x9876543210987654321098765432109876543210',
-         makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
+         makerAsset: '0x29b63864FDF06B19daa5fb7134755941e305400D',
          takerAsset: '0x0000000000000000000000000000000000000000',
          makerAmount: '1000000000',
          takerAmount: '100000000000',
          deadline: Math.floor(Date.now() / 1000) + 86400, // 24 hours
          tonDestination: {
-           tonRecipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL',
+           tonRecipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL=',
            tonChainId: -3
          }
        };

@@ -13,7 +13,7 @@ import {RevertReasonForwarder} from "../lib/cross-chain-swap/lib/solidity-utils/
 import {IEscrowFactory} from "../lib/cross-chain-swap/contracts/interfaces/IEscrowFactory.sol";
 import {IBaseEscrow} from "../lib/cross-chain-swap/contracts/interfaces/IBaseEscrow.sol";
 import {TimelocksLib, Timelocks} from "../lib/cross-chain-swap/contracts/libraries/TimelocksLib.sol";
-import {Address, AddressLib} from "../lib/cross-chain-swap/lib/solidity-utils/contracts/libraries/AddressLib.sol";
+import {Address, AddressLib} from "solidity-utils/contracts/libraries/AddressLib.sol";
 import {IEscrow} from "../lib/cross-chain-swap/contracts/interfaces/IEscrow.sol";
 import {ImmutablesLib} from "../lib/cross-chain-swap/contracts/libraries/ImmutablesLib.sol";
 
@@ -149,7 +149,7 @@ contract Resolver is IResolverExample, Ownable {
         IBaseEscrow.Immutables memory immutables,
         bytes32 secret
     ) internal {
-        address taker = immutables.taker.get();
+        address taker = AddressLib.get(immutables.taker);
         uint256 amount = immutables.amount;
         
         require(amount >= MIN_TON_DEPOSIT, "Deposit amount too low");
@@ -338,8 +338,8 @@ contract Resolver is IResolverExample, Ownable {
         escrow.cancel(immutables);
         
         // Handle TON-specific cleanup if this was a cross-chain order
-        address taker = immutables.taker.get();
-        address token = immutables.token.get();
+        address taker = AddressLib.get(immutables.taker);
+        address token = AddressLib.get(immutables.token);
         bytes32 depositKey = keccak256(abi.encodePacked(taker, token));
             
         // Note: This is simplified - in production you'd have better tracking

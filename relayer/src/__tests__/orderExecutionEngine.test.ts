@@ -164,16 +164,16 @@ describe('OrderExecutionEngine', () => {
     it('should find matching orders', async () => {
       const targetOrder = createMockOrderEntry(
         '0x1111111111111111111111111111111111111111',
-        '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b', // Token A
-        '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0', // Token B
+        '0xFb5462dEE4e00401980730f0AB17232fd3Ca9889', // Token A
+        '0xA0625266ed7347d2B1c8984fE15Db4DAFb36F46F', // Token B
         '1000000000000000000', // 1 Token A
         '2000000000000000000'  // 2 Token B
       );
 
       const matchingOrder = createMockOrderEntry(
         '0x2222222222222222222222222222222222222222',
-        '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0', // Token B (complementary)
-        '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b', // Token A (complementary)
+        '0xA0625266ed7347d2B1c8984fE15Db4DAFb36F46F', // Token B (complementary)
+        '0xFb5462dEE4e00401980730f0AB17232fd3Ca9889', // Token A (complementary)
         '2000000000000000000', // 2 Token B
         '1000000000000000000'  // 1 Token A
       );
@@ -200,24 +200,24 @@ describe('OrderExecutionEngine', () => {
     it('should sort matching orders by price and time', async () => {
       const targetOrder = createMockOrderEntry(
         '0x1111111111111111111111111111111111111111',
-        '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
-        '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0',
+        '0xFb5462dEE4e00401980730f0AB17232fd3Ca9889',
+        '0xA0625266ed7347d2B1c8984fE15Db4DAFb36F46F',
         '1000000000000000000',
         '2000000000000000000'
       );
 
       const earlierOrder = createMockOrderEntry(
         '0x2222222222222222222222222222222222222222',
-        '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0',
-        '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
+        '0xA0625266ed7347d2B1c8984fE15Db4DAFb36F46F',
+        '0xFb5462dEE4e00401980730f0AB17232fd3Ca9889',
         '2000000000000000000',
         '1000000000000000000'
       );
 
       const laterOrder = createMockOrderEntry(
         '0x3333333333333333333333333333333333333333',
-        '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0',
-        '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
+        '0xA0625266ed7347d2B1c8984fE15Db4DAFb36F46F',
+        '0xFb5462dEE4e00401980730f0AB17232fd3Ca9889',
         '2000000000000000000',
         '1000000000000000000'
       );
@@ -243,8 +243,8 @@ describe('OrderExecutionEngine', () => {
         order: {
           maker: '0x1234567890123456789012345678901234567890',
           receiver: '0x9876543210987654321098765432109876543210',
-          makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
-          takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0',
+          makerAsset: '0xFb5462dEE4e00401980730f0AB17232fd3Ca9889',
+          takerAsset: '0xA0625266ed7347d2B1c8984fE15Db4DAFb36F46F',
           makerAmount: '1000000000000000000',
           takerAmount: '2000000000000000000',
           salt: BigInt('12345'),
@@ -292,7 +292,7 @@ describe('OrderExecutionEngine', () => {
       const crossChainOrder = createValidOrder();
       crossChainOrder.order.order.crossChainType = 'eth_to_ton';
       crossChainOrder.order.order.tonDestination = {
-        tonRecipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL',
+        tonRecipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL=',
         tonChainId: -3,
         hashlock: '0x' + 'a'.repeat(64),
         timelock: Math.floor(Date.now() / 1000) + 3600
@@ -511,8 +511,8 @@ describe('OrderExecutionEngine', () => {
            order: {
              maker: '0x1234567890123456789012345678901234567890',
              receiver: '0x9876543210987654321098765432109876543210',
-             makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
-             takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0',
+             makerAsset: '0xFb5462dEE4e00401980730f0AB17232fd3Ca9889',
+             takerAsset: '0xA0625266ed7347d2B1c8984fE15Db4DAFb36F46F',
              makerAmount: '1000000000000000000',
              takerAmount: '2000000000000000000',
              salt: BigInt('12345'),
@@ -555,8 +555,8 @@ describe('OrderExecutionEngine', () => {
         order: {
           maker: '0x1234567890123456789012345678901234567890',
           receiver: '0x9876543210987654321098765432109876543210',
-          makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
-          takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0',
+          makerAsset: '0xFb5462dEE4e00401980730f0AB17232fd3Ca9889',
+          takerAsset: '0xA0625266ed7347d2B1c8984fE15Db4DAFb36F46F',
           makerAmount: '1000000000000000000',
           takerAmount: '2000000000000000000',
           salt: BigInt('12345'),

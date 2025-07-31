@@ -11,9 +11,9 @@ import path from 'path';
 import { ethers } from 'ethers';
 import { EthereumRelayer } from '../src/relay/ethereum';
 import { logger } from '../src/utils/logger';
-import { startServer, setupGracefulShutdown, ethereumBlockHeight, tonBlockHeight } from '../src/server';
+import { startServer, setupGracefulShutdown, ethereumBlockHeight} from '../src/server';
 
-// Load environment variables from .env file
+// Load e nvironment variables from .env file
 dotenv.config();
 
 // Configuration interface for the relayer

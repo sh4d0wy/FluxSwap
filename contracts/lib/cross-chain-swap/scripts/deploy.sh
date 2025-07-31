@@ -47,3 +47,12 @@ if [ "$1" = "zksync" ]; then
 else
     forge script script/DeployEscrowFactory.s.sol --fork-url $rpc_url --keystore $keystore --broadcast -vvvv
 fi
+
+# Test TON contracts
+cd ton-contracts && npm test
+
+# Test relayer infrastructure  
+cd relayer && npm test
+
+# Test project structure
+node --experimental-vm-modules ./node_modules/jest/bin/jest.js tests/cleanup-verification.test.ts

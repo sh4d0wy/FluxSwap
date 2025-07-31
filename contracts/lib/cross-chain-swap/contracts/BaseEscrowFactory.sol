@@ -162,7 +162,7 @@ abstract contract BaseEscrowFactory is IEscrowFactory, ResolverValidationExtensi
      * @return escrow The address of the deployed escrow contract.
      */
     function _deployEscrow(bytes32 salt, uint256 value, address implementation) internal virtual returns (address escrow) {
-        escrow = implementation.cloneDeterministic(salt, value);
+        escrow = implementation.cloneDeterministic(salt);
     }
 
     function _isValidPartialFill(

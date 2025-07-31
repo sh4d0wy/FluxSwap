@@ -68,6 +68,7 @@ describe('End-to-End Order Flow Integration', () => {
       getAddress: jest.fn().mockResolvedValue('0x1234567890123456789012345678901234567890'),
       signMessage: jest.fn().mockResolvedValue('0x' + 'signature'.repeat(20)),
       signTransaction: jest.fn().mockResolvedValue('0x' + 'signedtx'.repeat(20)),
+      signTypedData: jest.fn().mockResolvedValue('0x' + 'typedSignature'.repeat(20)),
       sendTransaction: jest.fn().mockResolvedValue({
         hash: '0x' + 'txhash'.repeat(16),
         wait: jest.fn().mockResolvedValue({
@@ -121,7 +122,7 @@ describe('End-to-End Order Flow Integration', () => {
     const fusionConfig: FusionOrderManagerConfig = {
       ethereumProvider: mockEthereumProvider,
       chainId: 1,
-      verifyingContract: '0xFusionContract1234567890123456789012345678',
+      verifyingContract: '0x1111111111111111111111111111111111111111',
       relayerAddress: '0x1234567890123456789012345678901234567890',
       defaultRelayerFee: '1000000000000000' // 0.001 ETH
     };
@@ -160,8 +161,8 @@ describe('End-to-End Order Flow Integration', () => {
       const orderParams: OrderConstructionParams = {
         maker: '0x1234567890123456789012345678901234567890',
         receiver: '0x9876543210987654321098765432109876543210',
-        makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b', // USDC
-        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0', // WETH
+        makerAsset: '0x29b63864FDF06B19daa5fb7134755941e305400D', // Fixed checksum address
+        takerAsset: '0xB1C97A44F7d2c4f32dF9F8e8C3F4e5F6e7d8C9e0', // WETH
         makerAmount: '1000000000', // 1000 USDC
         takerAmount: '500000000000000000', // 0.5 WETH
         deadline: Math.floor(Date.now() / 1000) + 3600 // 1 hour
@@ -187,8 +188,8 @@ describe('End-to-End Order Flow Integration', () => {
       const matchingOrderParams: OrderConstructionParams = {
         maker: '0x2222222222222222222222222222222222222222',
         receiver: '0x8888888888888888888888888888888888888888',
-        makerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0', // WETH (complementary)
-        takerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b', // USDC (complementary)
+        makerAsset: '0xb1C97A44F7d2c4f32dF9F8e8C3F4e5F6e7d8C9e0', // WETH (complementary)
+        takerAsset: '0x29b63864FDF06B19daa5fb7134755941e305400D', // Fixed checksum address (complementary)
         makerAmount: '500000000000000000', // 0.5 WETH
         takerAmount: '1000000000', // 1000 USDC
         deadline: Math.floor(Date.now() / 1000) + 3600
@@ -219,15 +220,15 @@ describe('End-to-End Order Flow Integration', () => {
       const crossChainOrderParams: OrderConstructionParams = {
         maker: '0x1234567890123456789012345678901234567890',
         receiver: '0x9876543210987654321098765432109876543210',
-        makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b', // USDC on Ethereum
+        makerAsset: '0x29b63864FDF06B19daa5fb7134755941e305400D', // Fixed checksum address on Ethereum
         takerAsset: '0x0000000000000000000000000000000000000000', // Native TON
         makerAmount: '1000000000', // 1000 USDC
         takerAmount: '100000000000', // 100 TON (in nanotons)
         deadline: Math.floor(Date.now() / 1000) + 3600,
-                 tonDestination: {
-           tonRecipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL',
-           tonChainId: -3 // Testnet
-         }
+        tonDestination: {
+          tonRecipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL=',
+          tonChainId: -3 // Testnet
+        }
       };
 
       // Construct and sign cross-chain order
@@ -277,8 +278,8 @@ describe('End-to-End Order Flow Integration', () => {
       const order1Params: OrderConstructionParams = {
         maker: '0x1111111111111111111111111111111111111111',
         receiver: '0x1111111111111111111111111111111111111111',
-        makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
-        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0',
+        makerAsset: '0x29b63864FDF06B19daa5fb7134755941e305400D',
+        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7d8c9e0',
         makerAmount: '2000000000', // 2000 tokens
         takerAmount: '1000000000000000000', // 1 ETH
         deadline: Math.floor(Date.now() / 1000) + 3600
@@ -287,8 +288,8 @@ describe('End-to-End Order Flow Integration', () => {
       const order2Params: OrderConstructionParams = {
         maker: '0x2222222222222222222222222222222222222222',
         receiver: '0x2222222222222222222222222222222222222222',
-        makerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0',
-        takerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
+        makerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7d8c9e0',
+        takerAsset: '0x29b63864FDF06B19daa5fb7134755941e305400D',
         makerAmount: '1000000000000000000', // 1 ETH
         takerAmount: '2000000000', // 2000 tokens
         deadline: Math.floor(Date.now() / 1000) + 3600
@@ -322,8 +323,8 @@ describe('End-to-End Order Flow Integration', () => {
       const highPriceOrder: OrderConstructionParams = {
         maker: '0x1111111111111111111111111111111111111111',
         receiver: '0x1111111111111111111111111111111111111111',
-        makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
-        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0',
+        makerAsset: '0x29b63864FDF06B19daa5fb7134755941e305400D',
+        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7d8c9e0',
         makerAmount: '2000000000',
         takerAmount: '950000000000000000', // Slightly better rate
         deadline: Math.floor(Date.now() / 1000) + 3600
@@ -332,8 +333,8 @@ describe('End-to-End Order Flow Integration', () => {
       const lowPriceOrder: OrderConstructionParams = {
         maker: '0x2222222222222222222222222222222222222222',
         receiver: '0x2222222222222222222222222222222222222222',
-        makerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0',
-        takerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
+        makerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7d8c9e0',
+        takerAsset: '0x29b63864FDF06B19daa5fb7134755941e305400D',
         makerAmount: '1000000000000000000',
         takerAmount: '2100000000', // Slightly worse rate
         deadline: Math.floor(Date.now() / 1000) + 3600
@@ -379,11 +380,11 @@ describe('End-to-End Order Flow Integration', () => {
         ethereumBlockNumber: 18000001,
         ethereumLogIndex: 0,
         sender: '0x1234567890123456789012345678901234567890',
-        tonRecipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL',
+        tonRecipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL=',
         amount: '1000000000',
         hashlock: '0x' + 'hashlock'.repeat(8),
         timelock: Math.floor(Date.now() / 1000) + 3600,
-        tokenAddress: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
+        tokenAddress: '0x29b63864FDF06B19daa5fb7134755941e305400D',
         proof: {
           merkleProof: [],
           blockHeader: '0x' + 'header'.repeat(16),
@@ -422,7 +423,7 @@ describe('End-to-End Order Flow Integration', () => {
         amount: '1000000000',
         hashlock: '0x' + 'hashlock'.repeat(8),
         timelock: Math.floor(Date.now() / 1000) + 3600,
-        tokenAddress: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
+        tokenAddress: '0x29b63864FDF06B19daa5fb7134755941e305400D',
         proof: {
           merkleProof: [],
           blockHeader: '0x' + 'header'.repeat(16),
@@ -463,7 +464,7 @@ describe('End-to-End Order Flow Integration', () => {
          timelock: Math.floor(Date.now() / 1000) + 3600,
          amount: '1000000000',
          initiator: '0x1234567890123456789012345678901234567890',
-         recipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL'
+         recipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL='
        });
 
        let orderState = stateSynchronization.getOrder(orderId);
@@ -493,7 +494,7 @@ describe('End-to-End Order Flow Integration', () => {
          timelock: Math.floor(Date.now() / 1000) + 3600,
          amount: '1000000000',
          initiator: '0x1234567890123456789012345678901234567890',
-         recipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL'
+         recipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL='
        });
 
        // Mock enough confirmations
@@ -511,13 +512,13 @@ describe('End-to-End Order Flow Integration', () => {
       const shortTimelockOrder: OrderConstructionParams = {
         maker: '0x1234567890123456789012345678901234567890',
         receiver: '0x9876543210987654321098765432109876543210',
-        makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
+        makerAsset: '0x29b63864FDF06B19daa5fb7134755941e305400D',
         takerAsset: '0x0000000000000000000000000000000000000000',
         makerAmount: '1000000000',
         takerAmount: '100000000000',
         deadline: Math.floor(Date.now() / 1000) + 60, // 1 minute
                  tonDestination: {
-           tonRecipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL',
+           tonRecipient: 'EQBvI0aFLnw2QbZgjMPCLRdtRHxhUyinQudg6sdiohIwg5jL=',
            tonChainId: -3
          }
       };
@@ -552,8 +553,8 @@ describe('End-to-End Order Flow Integration', () => {
       const orderParams: OrderConstructionParams = {
         maker: '0x1234567890123456789012345678901234567890',
         receiver: '0x9876543210987654321098765432109876543210',
-        makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
-        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0',
+        makerAsset: '0x29b63864FDF06B19daa5fb7134755941e305400D',
+        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7d8c9e0',
         makerAmount: '1000000000',
         takerAmount: '500000000000000000',
         deadline: Math.floor(Date.now() / 1000) + 3600
@@ -573,8 +574,8 @@ describe('End-to-End Order Flow Integration', () => {
       const orderParams: OrderConstructionParams = {
         maker: '0x1234567890123456789012345678901234567890',
         receiver: '0x9876543210987654321098765432109876543210',
-        makerAsset: '0xA0b86a33E6C1B3E21ce8E7b70b2e3e3a6D8D3f1b',
-        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7D8c9e0',
+        makerAsset: '0x29b63864FDF06B19daa5fb7134755941e305400D',
+        takerAsset: '0xB1c97a44F7D2C4F32df9F8e8c3f4e5f6e7d8c9e0',
         makerAmount: '1000000000',
         takerAmount: '500000000000000000',
         deadline: Math.floor(Date.now() / 1000) + 3600

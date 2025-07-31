@@ -4,16 +4,16 @@ import { sleep } from '../utils/common';
 import { QuoteService } from './quoteService';
 
 /**
- * Service for handling cross-chain swaps between Ethereum and NEAR
+ * Service for handling cross-chain swaps between Ethereum and TON
  */
 export class SwapService {
   private readonly provider: ethers.Provider;
   private readonly quoteService: QuoteService;
   private isRunning = false;
   
-  // NEAR-specific configuration
-  private readonly nearChainId = 397; // NEAR chain ID
-  private readonly nearTokenAddress = '0x85F17Cf997934a597031b2E18a9aB6ebD4B9f6a4'; // NEAR token address on Ethereum
+  // TON-specific configuration
+  private readonly tonChainId = 396; // TON chain ID
+  private readonly tonTokenAddress = '0x582d872a1b094fc48f5de31d3b73f2d9be47def1'; // TON token address on Ethereum
   
   constructor(provider: ethers.Provider) {
     if (!provider) {
@@ -119,20 +119,20 @@ export class SwapService {
   }
   
   /**
-   * Initiate a cross-chain swap from Ethereum to NEAR
+   * Initiate a cross-chain swap from Ethereum to TON
    * @param fromToken Source token address
-   * @param toToken Destination token address on NEAR
+   * @param toToken Destination token address on TON
    * @param amount Amount to swap
-   * @param recipient NEAR account ID to receive the funds
+   * @param recipient TON address to receive the funds
    */
-  public async initiateEthereumToNearSwap(
+  public async initiateEthereumToTonSwap(
     fromToken: string,
     toToken: string,
     amount: string,
     recipient: string
   ): Promise<{ order: any; signature: string }> {
     try {
-      logger.info(`Initiating Ethereum to NEAR swap: ${amount} ${fromToken} -> ${toToken} to ${recipient}`);
+      logger.info(`Initiating Ethereum to TON swap: ${amount} ${fromToken} -> ${toToken} to ${recipient}`);
       
       // Generate a meta-order for the swap
       const { order, signature, quote } = await this.quoteService.generateMetaOrder(
@@ -140,7 +140,7 @@ export class SwapService {
         toToken,
         amount,
         await this.provider.getNetwork().then(n => Number(n.chainId)),
-        this.nearChainId,
+        this.tonChainId,
         recipient
       );
       
@@ -154,33 +154,33 @@ export class SwapService {
       return { order, signature };
       
     } catch (error) {
-      logger.error('Error initiating Ethereum to NEAR swap:', error);
+      logger.error('Error initiating Ethereum to TON swap:', error);
       throw error;
     }
   }
   
   /**
-   * Initiate a cross-chain swap from NEAR to Ethereum
-   * @param fromToken Source token address on NEAR
+   * Initiate a cross-chain swap from TON to Ethereum
+   * @param fromToken Source token address on TON
    * @param toToken Destination token address on Ethereum
    * @param amount Amount to swap
    * @param recipient Ethereum address to receive the funds
    */
-  public async initiateNearToEthereumSwap(
+  public async initiateTonToEthereumSwap(
     fromToken: string,
     toToken: string,
     amount: string,
     recipient: string
   ): Promise<{ order: any; signature: string }> {
     try {
-      logger.info(`Initiating NEAR to Ethereum swap: ${amount} ${fromToken} -> ${toToken} to ${recipient}`);
+      logger.info(`Initiating TON to Ethereum swap: ${amount} ${fromToken} -> ${toToken} to ${recipient}`);
       
       // Generate a meta-order for the swap
       const { order, signature, quote } = await this.quoteService.generateMetaOrder(
         fromToken,
         toToken,
         amount,
-        this.nearChainId,
+        this.tonChainId,
         await this.provider.getNetwork().then(n => Number(n.chainId)),
         recipient
       );
@@ -195,7 +195,7 @@ export class SwapService {
       return { order, signature };
       
     } catch (error) {
-      logger.error('Error initiating NEAR to Ethereum swap:', error);
+      logger.error('Error initiating TON to Ethereum swap:', error);
       throw error;
     }
   }

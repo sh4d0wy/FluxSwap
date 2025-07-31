@@ -1,6 +1,6 @@
 // Global type declarations for the project
 // TODO: Replace with TON types when implementing Phase 2
-// declare module 'ton-sdk' {
+declare module 'ton-sdk' {
   export interface Account {
     // Add the minimum required Account interface
     accountId: string;

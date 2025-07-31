@@ -23,9 +23,9 @@ const ethereumEventsProcessed = new Counter({
   registers: [register],
 });
 
-const nearEventsProcessed = new Counter({
-  name: 'near_events_processed_total',
-  help: 'Total number of NEAR events processed',
+const tonEventsProcessed = new Counter({
+  name: 'ton_events_processed_total',
+  help: 'Total number of TON events processed',
   labelNames: ['event_type', 'status'],
   registers: [register],
 });
@@ -42,9 +42,9 @@ const ethereumBlockHeight = new Gauge({
   registers: [register],
 });
 
-const nearBlockHeight = new Gauge({
-  name: 'near_block_height',
-  help: 'Current NEAR block height',
+const tonBlockHeight = new Gauge({
+  name: 'ton_block_height',
+  help: 'Current TON block height',
   registers: [register],
 });
 
@@ -115,9 +115,9 @@ export {
   startServer,
   setupGracefulShutdown,
   ethereumEventsProcessed,
-  nearEventsProcessed,
+  tonEventsProcessed,
   activeConnections,
   ethereumBlockHeight,
-  nearBlockHeight,
+  tonBlockHeight,
   register,
 };

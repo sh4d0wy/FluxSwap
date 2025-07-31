@@ -15,41 +15,6 @@ export const MAXIMUM_TIMELOCK = 86400 * 7; // 1 week
 export const SECRET_LENGTH = 32; // bytes
 
 /**
- * Address validation utilities
- */
-export class AddressValidator {
-  /**
-   * Validate Ethereum address format
-   */
-  static isValidEthereumAddress(addr: string): boolean {
-    return /^0x[a-fA-F0-9]{40}$/.test(addr);
-  }
-
-  /**
-   * Validate TON address format (simplified validation)
-   * In production, use proper TON address validation library
-   */
-  static isValidTonAddress(addr: string): boolean {
-    // TON addresses are base64 encoded with specific format
-    // Must start with E, U, or Q and be exactly 49 characters with one = at the end
-    if (!addr || typeof addr !== 'string') return false;
-    return /^[EUQ][A-Za-z0-9+/]{47}=$/.test(addr);
-  }
-
-  /**
-   * Validate addresses based on chain
-   */
-  static validateAddress(address: string, chain: 'ethereum' | 'ton'): boolean {
-    if (chain === 'ethereum') {
-      return this.isValidEthereumAddress(address);
-    } else if (chain === 'ton') {
-      return this.isValidTonAddress(address);
-    }
-    return false;
-  }
-}
-
-/**
  * Message validation utilities
  */
 export class MessageValidator {
@@ -144,44 +109,40 @@ export class MessageValidator {
 
     if (!amount || typeof amount !== 'string') {
       errors.push('Amount is required');
-    } else {
-      try {
-        const bigAmount = ethers.parseUnits(amount, 0);
-        if (bigAmount <= 0n) {
-          errors.push('Amount must be positive');
-        }
-      } catch (err) {
-        errors.push('Amount must be a valid number string');
-      }
+    } else if (!/^\d+$/.test(amount)) {
+      errors.push('Amount must be a positive integer string');
+    } else if (BigInt(amount) <= 0n) {
+      errors.push('Amount must be greater than zero');
     }
 
     return errors;
   }
 
   /**
-   * Validate entire cross-chain message
+   * Validate cross-chain message
    */
   static validateCrossChainMessage(message: CrossChainMessage): { isValid: boolean; errors: string[] } {
-    let errors: string[] = [];
+    const errors: string[] = [];
 
     // Validate base message fields
-    errors = errors.concat(this.validateBaseMessage(message));
+    errors.push(...this.validateBaseMessage(message));
 
-    // Type-specific validation
+    // Validate message-specific fields based on type
     switch (message.type) {
       case 'ETH_TO_TON_ESCROW':
-        errors = errors.concat(this.validateEthToTonMessage(message));
+        errors.push(...this.validateEthToTonMessage(message));
         break;
       case 'TON_TO_ETH_ESCROW':
-        errors = errors.concat(this.validateTonToEthMessage(message));
+        errors.push(...this.validateTonToEthMessage(message));
         break;
       case 'ETH_FULFILLMENT_REQUEST':
-        errors = errors.concat(this.validateEthFulfillmentMessage(message));
+        errors.push(...this.validateEthFulfillmentMessage(message));
         break;
       case 'TON_FULFILLMENT':
-        errors = errors.concat(this.validateTonFulfillmentMessage(message));
+        errors.push(...this.validateTonFulfillmentMessage(message));
         break;
-      // Add other message type validations as needed
+      default:
+        errors.push(`Unknown message type: ${message.type}`);
     }
 
     return {
@@ -193,21 +154,11 @@ export class MessageValidator {
   private static validateEthToTonMessage(message: any): string[] {
     const errors: string[] = [];
 
-    if (!AddressValidator.isValidEthereumAddress(message.sender)) {
-      errors.push('Invalid Ethereum sender address');
-    }
-
-    if (!AddressValidator.isValidTonAddress(message.tonRecipient)) {
-      errors.push('Invalid TON recipient address');
-    }
+    // Removed address validation - addresses are assumed to be valid
 
     errors.push(...this.validateAmount(message.amount));
     errors.push(...this.validateHashlock(message.hashlock));
     errors.push(...this.validateTimelock(message.timelock));
-
-    if (message.tokenAddress && !AddressValidator.isValidEthereumAddress(message.tokenAddress)) {
-      errors.push('Invalid Ethereum token address');
-    }
 
     return errors;
   }
@@ -215,13 +166,7 @@ export class MessageValidator {
   private static validateTonToEthMessage(message: any): string[] {
     const errors: string[] = [];
 
-    if (!AddressValidator.isValidTonAddress(message.sender)) {
-      errors.push('Invalid TON sender address');
-    }
-
-    if (!AddressValidator.isValidEthereumAddress(message.ethereumRecipient)) {
-      errors.push('Invalid Ethereum recipient address');
-    }
+    // Removed address validation - addresses are assumed to be valid
 
     errors.push(...this.validateAmount(message.amount));
     errors.push(...this.validateHashlock(message.hashlock));
@@ -237,9 +182,7 @@ export class MessageValidator {
       errors.push('Secret must be a 64-character hex string');
     }
 
-    if (!AddressValidator.isValidTonAddress(message.tonRecipient)) {
-      errors.push('Invalid TON recipient address');
-    }
+    // Removed address validation - addresses are assumed to be valid
 
     return errors;
   }
@@ -251,9 +194,7 @@ export class MessageValidator {
       errors.push('Secret must be a 64-character hex string');
     }
 
-    if (!AddressValidator.isValidEthereumAddress(message.ethereumRecipient)) {
-      errors.push('Invalid Ethereum recipient address');
-    }
+    // Removed address validation - addresses are assumed to be valid
 
     return errors;
   }

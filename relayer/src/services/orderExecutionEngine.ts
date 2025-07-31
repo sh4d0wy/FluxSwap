@@ -157,8 +157,18 @@ export class OrderExecutionEngine extends EventEmitter {
       const matchingOrders = await this.findMatchingOrders(orderEntry);
       
       if (matchingOrders.length === 0) {
-        // Execute as cross-chain order without matching
-        return await this.executeCrossChainOrder(orderEntry);
+        // Check if this is a cross-chain order
+        if (orderEntry.order.order.crossChainType === 'ethereum_only') {
+          // For Ethereum-only orders, we need a match to execute
+          throw new OrderError(
+            OrderErrorCode.ORDER_ALREADY_FILLED,
+            `No matching orders found for Ethereum-only order ${orderId}`,
+            orderId
+          );
+        } else {
+          // Execute as cross-chain order without matching
+          return await this.executeCrossChainOrder(orderEntry);
+        }
       } else {
         // Execute with local matching
         const bestMatch = matchingOrders[0];
@@ -188,8 +198,21 @@ export class OrderExecutionEngine extends EventEmitter {
     const allOrders = this.fusionOrderManager.getOrdersByStatus(OrderStatus.SIGNED);
     const matchingOrders: OrderBookEntry[] = [];
 
+    logger.info('Finding matching orders', { 
+      targetOrderId: this.getOrderId(targetOrder.order.order),
+      totalOrders: allOrders.length,
+      targetOrderAssets: `${targetOrder.order.order.makerAsset} -> ${targetOrder.order.order.takerAsset}`
+    });
+
     for (const order of allOrders) {
-      if (await this.canMatchOrders(targetOrder, order)) {
+      const canMatch = await this.canMatchOrders(targetOrder, order);
+      logger.info('Order matching check', {
+        orderId: this.getOrderId(order.order.order),
+        orderAssets: `${order.order.order.makerAsset} -> ${order.order.order.takerAsset}`,
+        canMatch
+      });
+      
+      if (canMatch) {
         matchingOrders.push(order);
       }
     }
@@ -204,6 +227,11 @@ export class OrderExecutionEngine extends EventEmitter {
       }
       
       return a.createdAt - b.createdAt; // Earlier orders first
+    });
+
+    logger.info('Matching orders found', { 
+      count: matchingOrders.length,
+      orderIds: matchingOrders.map(o => this.getOrderId(o.order.order))
     });
 
     return matchingOrders;
@@ -551,23 +579,63 @@ export class OrderExecutionEngine extends EventEmitter {
     const order1Data = order1.order.order;
     const order2Data = order2.order.order;
 
+    const order1Id = this.getOrderId(order1Data);
+    const order2Id = this.getOrderId(order2Data);
+
+    logger.debug('canMatchOrders check', {
+      order1Id,
+      order2Id,
+      order1Assets: `${order1Data.makerAsset} -> ${order1Data.takerAsset}`,
+      order2Assets: `${order2Data.makerAsset} -> ${order2Data.takerAsset}`,
+      order1Amounts: `${order1Data.makerAmount} -> ${order1Data.takerAmount}`,
+      order2Amounts: `${order2Data.makerAmount} -> ${order2Data.takerAmount}`
+    });
+
     // Cannot match order with itself
-    if (this.getOrderId(order1Data) === this.getOrderId(order2Data)) {
+    if (order1Id === order2Id) {
+      logger.debug('Self-match rejected');
       return false;
     }
 
     // Check if assets are complementary (order1's taker = order2's maker and vice versa)
-    if (order1Data.takerAsset.toLowerCase() !== order2Data.makerAsset.toLowerCase() ||
-        order1Data.makerAsset.toLowerCase() !== order2Data.takerAsset.toLowerCase()) {
+    const assetsMatch = order1Data.takerAsset.toLowerCase() === order2Data.makerAsset.toLowerCase() &&
+                       order1Data.makerAsset.toLowerCase() === order2Data.takerAsset.toLowerCase();
+    
+    logger.debug('Asset matching', {
+      order1Taker: order1Data.takerAsset.toLowerCase(),
+      order2Maker: order2Data.makerAsset.toLowerCase(),
+      order1Maker: order1Data.makerAsset.toLowerCase(),
+      order2Taker: order2Data.takerAsset.toLowerCase(),
+      assetsMatch
+    });
+
+    if (!assetsMatch) {
+      logger.debug('Asset mismatch');
       return false;
     }
 
     // Check price compatibility with slippage tolerance
+    // For complementary orders, we need to calculate prices in the same direction
     const price1 = this.calculateOrderPrice(order1);
     const price2 = this.calculateOrderPrice(order2);
-    const slippage = Math.abs(price1 - price2) / Math.max(price1, price2);
+    
+    // For complementary orders, prices should be inverses of each other
+    // Check if price1 * price2 ≈ 1 (within slippage tolerance)
+    const priceProduct = price1 * price2;
+    const slippage = Math.abs(priceProduct - 1);
 
-    return slippage <= this.matchingCriteria.maxPriceSlippage;
+    logger.debug('Price check', {
+      price1,
+      price2,
+      priceProduct,
+      slippage,
+      maxSlippage: this.matchingCriteria.maxPriceSlippage,
+      priceMatch: slippage <= this.matchingCriteria.maxPriceSlippage
+    });
+
+    const result = slippage <= this.matchingCriteria.maxPriceSlippage;
+    logger.debug('canMatchOrders result', { result });
+    return result;
   }
 
   private calculateOrderPrice(order: OrderBookEntry): number {
