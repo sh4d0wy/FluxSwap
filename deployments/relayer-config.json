@@ -1,0 +1,32 @@
+{
+  "ethereum": {
+    "chainId": 11155111,
+    "rpcUrl": "https://1rpc.io/sepolia",
+    "contracts": {
+      "escrowFactory": "0x2517B46E1f40f4EC78cA9824AC98d03B179C2B26",
+      "limitOrderProtocol": "0x477F06cEcBf739Dc6495C9B34F3dF6dD2Ba0CC91",
+      "feeBank": "0x5C85Df4d75E4bAfDc03Ef5D510Da6E134E95F1fF"
+    },
+    "implementationContracts": {
+      "escrowSrc": "0x4D7779ED61238c0b00272631F1ee319F76b71b5B",
+      "escrowDst": "0x206b6B0167021a45914cd796A2173959913F5Fb1"
+    }
+  },
+  "ton": {
+    "network": "testnet",
+    "apiUrl": "https://testnet.toncenter.com/api/v2/jsonRPC",
+    "contracts": {
+      "bridge": "kQByYeaV-f2CiO2mbLZXG3AdIyEPiXE4X6qJ7B0T2D9oo1Uh",
+      "escrow": "kQBrueQRdP--s4gQROFhwqVQXb6QEoSAIhigzTip-Xsz7JS8",
+      "tokenHandler": "kQC6P3F9qIyCPO3vj3e8n4DyxWUImPMdfzZ6ylAHhfZgqxfR"
+    }
+  },
+  "relayer": {
+    "pollInterval": 5000,
+    "logLevel": "info"
+  },
+  "notes": {
+    "escrowArchitecture": "EscrowFactory deploys individual escrow instances dynamically. The implementation contracts are templates used by the factory.",
+    "primaryInteraction": "Relayer primarily interacts with EscrowFactory, not individual implementation contracts."
+  }
+} 

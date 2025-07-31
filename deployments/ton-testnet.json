@@ -1,0 +1,12 @@
+{
+  "network": "ton-testnet",
+  "deploymentDate": "2025-07-31T00:00:00Z",
+  "contracts": {
+    "tonBridge": "kQByYeaV-f2CiO2mbLZXG3AdIyEPiXE4X6qJ7B0T2D9oo1Uh",
+    "tonEscrow": "kQBrueQRdP--s4gQROFhwqVQXb6QEoSAIhigzTip-Xsz7JS8",
+    "tonTokenHandler": "kQC6P3F9qIyCPO3vj3e8n4DyxWUImPMdfzZ6ylAHhfZgqxfR"
+  },
+  "deployer": "0QDKBtdwCejw3enDWVl8KOOw4rj2uB3y0Gr5oUSzWAZIdIjd",
+  "networkType": "testnet",
+  "apiUrl": "https://testnet.toncenter.com/api/v2/jsonRPC"
+} 
