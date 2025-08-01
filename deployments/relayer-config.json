@@ -5,7 +5,8 @@
     "contracts": {
       "escrowFactory": "0x2517B46E1f40f4EC78cA9824AC98d03B179C2B26",
       "limitOrderProtocol": "0x477F06cEcBf739Dc6495C9B34F3dF6dD2Ba0CC91",
-      "feeBank": "0x5C85Df4d75E4bAfDc03Ef5D510Da6E134E95F1fF"
+      "feeBank": "0x5C85Df4d75E4bAfDc03Ef5D510Da6E134E95F1fF",
+      "ethereumTonBridge": "0x5b73C5498c1E3b4dbA84de0F1833c4a029d90519"
     },
     "implementationContracts": {
       "escrowSrc": "0x4D7779ED61238c0b00272631F1ee319F76b71b5B",

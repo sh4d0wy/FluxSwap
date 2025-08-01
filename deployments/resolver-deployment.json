@@ -1,0 +1,26 @@
+{
+    "contract": "Resolver",
+    "address": "0x512525aBd4dda45eb201ca4Ee2805A7Fb18be820",
+    "network": "sepolia",
+    "chainId": 11155111,
+    "deployer": "0x09D9a6EdfE066fc24F46bA8C2b21736468f2967D",
+    "escrowFactory": "0x2517B46E1f40f4EC78cA9824AC98d03B179C2B26",
+    "lop": "0x477F06cEcBf739Dc6495C9B34F3dF6dD2Ba0CC91",
+    "tonBridge": "0x5b73C5498c1E3b4dbA84de0F1833c4a029d90519",
+    "deployedAt": "2025-01-28T00:00:00Z",
+    "transactionHash": "0x255fb5bec4145608fff339a23027a91d51951a318e59800547cc656dbfbe06b3",
+    "blockNumber": 8888514,
+    "gasUsed": 1720883,
+    "gasCost": "0.008207387164452432 ETH",
+    "configuration": {
+        "minTonDeposit": "100000000000000000",
+        "maxTimelock": "604800",
+        "minTimelock": "3600"
+    },
+    "verification": {
+        "owner": "0x09D9a6EdfE066fc24F46bA8C2b21736468f2967D",
+        "tonBridge": "0x5b73C5498c1E3b4dbA84de0F1833c4a029d90519",
+        "minTonDeposit": "100000000000000000"
+    },
+    "status": "deployed_and_verified"
+}

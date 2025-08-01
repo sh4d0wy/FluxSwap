@@ -2,39 +2,9 @@
   "$schema": "https://raw.githubusercontent.com/tact-lang/tact/main/src/config/configSchema.json",
   "projects": [
     {
-      "name": "TonBridge",
-      "path": "contracts/ton_bridge.tact",
-      "output": "build/TonBridge",
-      "options": {
-        "debug": false,
-        "external": false
-      },
-      "mode": "full"
-    },
-    {
-      "name": "TonEscrow",
-      "path": "contracts/ton_escrow.tact",
-      "output": "build/TonEscrow",
-      "options": {
-        "debug": false,
-        "external": false
-      },
-      "mode": "full"
-    },
-    {
-      "name": "TonTokenHandler",
-      "path": "contracts/ton_token_handler.tact",
-      "output": "build/TonTokenHandler",
-      "options": {
-        "debug": false,
-        "external": false
-      },
-      "mode": "full"
-    },
-    {
-      "name": "TonBridge",
-      "path": "contracts/ton_bridge.tact",
-      "output": "build/TonBridge",
+      "name": "TonResolver",
+      "path": "contracts/ton_resolver.tact",
+      "output": "build/TonResolver",
       "options": {
         "debug": false,
         "external": false
