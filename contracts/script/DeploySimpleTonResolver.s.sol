@@ -24,23 +24,10 @@ contract DeploySimpleTonResolver is Script {
         vm.stopBroadcast();
         
         console.log("SimpleTonResolver deployed successfully!");
+        console.log("SimpleTonResolver address:", address(resolver));
         console.log("Resolver address:", address(resolver));
         console.log("EscrowFactory address:", escrowFactoryAddress);
-        console.log("Owner address:", deployerAddress);
+        console.log("Owner address:", deployerAddress);       
         
-        // Save deployment info
-        string memory deploymentInfo = string.concat(
-            '{"network":"sepolia","resolverAddress":"',
-            vm.toString(address(resolver)),
-            '","escrowFactoryAddress":"',
-            vm.toString(escrowFactoryAddress),
-            '","ownerAddress":"',
-            vm.toString(deployerAddress),
-            '","deployedAt":"',
-            vm.toString(block.timestamp),
-            '"}'
-        );
-        
-        vm.writeFile("deployments/simple-ton-resolver-deployment.json", deploymentInfo);
     }
 } 

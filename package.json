@@ -4,7 +4,10 @@
   "description": "Example of 1inch cross chain resolver",
   "scripts": {
     "test": "forge build && node --experimental-vm-modules ./node_modules/jest/bin/jest.js",
-    "lint": "eslint  \"tests/**/*.ts\""
+    "lint": "eslint  \"tests/**/*.ts\"",
+    "listen": "npx ts-node scripts/listen-to-events.ts",
+    "interact": "npx ts-node scripts/interact-with-resolver.ts",
+    "test-connection": "npx ts-node scripts/test-connection.ts"
   },
   "devDependencies": {
     "@eslint/compat": "1.1.0",

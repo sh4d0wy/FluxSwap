@@ -32,21 +32,6 @@ contract DeployResolver is Script {
         console.log("Limit Order Protocol address:", lopAddress);
         console.log("Owner address:", deployerAddress);
         
-        // Save deployment info
-        string memory deploymentInfo = string.concat(
-            '{"network":"sepolia","resolverAddress":"',
-            vm.toString(address(resolver)),
-            '","escrowFactoryAddress":"',
-            vm.toString(escrowFactoryAddress),
-            '","lopAddress":"',
-            vm.toString(lopAddress),
-            '","ownerAddress":"',
-            vm.toString(deployerAddress),
-            '","deployedAt":"',
-            vm.toString(block.timestamp),
-            '"}'
-        );
         
-        vm.writeFile("deployments/resolver-deployment-latest.json", deploymentInfo);
     }
 } 
