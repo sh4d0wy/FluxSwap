@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "description": "Example of 1inch cross chain resolver",
   "scripts": {
-    "test": "forge build && node --experimental-vm-modules ./node_modules/jest/bin/jest.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint  \"tests/**/*.ts\"",
-    "listen": "npx ts-node scripts/listen-to-events.ts",
-    "interact": "npx ts-node scripts/interact-with-resolver.ts",
-    "test-connection": "npx ts-node scripts/test-connection.ts"
+    "interact": "npx tsx scripts/interact-with-resolver.ts",
+    "test-connection": "npx ts-node scripts/test-connection.ts",
+    "whitelist": "npx tsx scripts/whitelist-resolver.ts",
+    "simple-ton": "npx tsx scripts/simple-ton-test.ts",
+    "deploy-whitelist": "npx tsx scripts/deploy-and-register-whitelist.ts"
   },
   "devDependencies": {
     "@eslint/compat": "1.1.0",

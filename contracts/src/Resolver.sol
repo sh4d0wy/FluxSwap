@@ -52,7 +52,7 @@ contract Resolver is Ownable {
         uint256 amount,
         TakerTraits takerTraits,
         bytes calldata args
-    ) external payable onlyOwner {
+    ) external payable {
 
         IBaseEscrow.Immutables memory immutablesMem = immutables;
         immutablesMem.timelocks = TimelocksLib.setDeployedAt(immutables.timelocks, block.timestamp);
@@ -70,7 +70,7 @@ contract Resolver is Ownable {
     /**
      * @notice See {IResolverExample-deployDst}.
      */
-    function deployDst(IBaseEscrow.Immutables calldata dstImmutables, uint256 srcCancellationTimestamp) external onlyOwner payable {
+    function deployDst(IBaseEscrow.Immutables calldata dstImmutables, uint256 srcCancellationTimestamp) external payable {
         _FACTORY.createDstEscrow{value: msg.value}(dstImmutables, srcCancellationTimestamp);
     }
 
