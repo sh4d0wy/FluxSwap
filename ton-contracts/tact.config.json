@@ -10,6 +10,26 @@
         "external": false
       },
       "mode": "full"
+    },
+    {
+      "name": "EscrowFactory",
+      "path": "contracts/escrow_factory.tact",
+      "output": "build/EscrowFactory",
+      "options": {
+        "debug": false,
+        "external": false
+      },
+      "mode": "full"
+    },
+    {
+      "name": "Escrow",
+      "path": "contracts/escrow.tact",
+      "output": "build/Escrow",
+      "options": {
+        "debug": false,
+        "external": false
+      },
+      "mode": "full"
     }
   ]
 }

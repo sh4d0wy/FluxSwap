@@ -6,6 +6,15 @@
         "start": "blueprint run",
         "build": "blueprint build",
         "test": "jest --verbose",
+        "test:flow": "jest --verbose TonResolverFlow.spec.ts",
+        "test:full": "ts-node scripts/runFullTests.ts",
+        "demo": "ts-node scripts/demoFlow.ts",
+        "demo:flow": "npm run demo",
+        "demo:improved": "ts-node scripts/improvedTestFlow.ts",
+        "test:escrow": "ts-node scripts/fixedEscrowTests.ts",
+        "test:comprehensive": "npm run build && npm run test:escrow && npm run demo:improved",
+        "test:all": "ts-node scripts/contractTestRunner.ts",
+        "test:quick": "ts-node scripts/quickContractTest.ts",
         "release": "blueprint pack && npm publish --access public"
     },
     "dependencies": {
